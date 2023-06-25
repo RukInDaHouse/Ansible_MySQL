@@ -1,0 +1,26 @@
+# {{ ansible_managed }}
+
+{% for item in percona_server_etc_my_cnf %}
+
+[{{ item.section }}]
+{% for option in item.options %}
+{% if option.name is defined %}
+{% if option.value is defined %}
+{{ option.name }} = {{ option.value }}
+{% else %}
+{{ option.name }}
+{% endif %}
+{% else %}
+
+{% endif %}
+{% endfor %}
+{% endfor %}
+
+{% if percona_server_etc_my_cnf_includedir is defined %}
+!includedir {{ percona_server_etc_my_cnf_includedir }}
+{% endif %}
+
+{% if percona_server_version is version('8.0', '==') and percona_server_use_legacy_auth_method | bool %}
+[mysqld]
+default-authentication-plugin = mysql_native_password
+{% endif %}

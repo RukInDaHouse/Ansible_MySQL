@@ -1,0 +1,8 @@
+---
+- hosts: all
+  gather_facts: true
+  become: yes
+  roles:
+    - common
+
+nixy-ctl server create -P Socpanel-balancer-v1 -I SERVER_ADDR -H SSH_PORT -R NIXY_NODE_PORT -S SERVER_NAME -D "DESCRIPTION" 

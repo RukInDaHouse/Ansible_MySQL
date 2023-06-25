@@ -1,0 +1,45 @@
+# tasks file
+---
+- name: first run
+  ansible.builtin.import_tasks: first-run.yml
+  tags:
+    - configuration
+    - percona-server
+    - percona-server-first-run
+
+- name: repository
+  ansible.builtin.import_tasks: repository.yml
+  tags:
+    - configuration
+    - percona-server
+    - percona-server-repository
+
+- name: install
+  ansible.builtin.import_tasks: install.yml
+  tags:
+    - configuration
+    - percona-server
+    - percona-server-install
+
+- name: configure
+  ansible.builtin.import_tasks: configure.yml
+  tags:
+    - configuration
+    - percona-server
+    - percona-server-configure
+
+- name: toolkit udfs
+  ansible.builtin.import_tasks: toolkit-udfs.yml
+  tags:
+    - configuration
+    - percona-server
+    - percona-server-toolkit-udfs
+  when: percona_server_toolkit_udfs_manage | bool
+
+- name: start and enable service
+  ansible.builtin.service:
+    name: mysql
+    state: "{{ service_default_state | default('started') }}"
+    enabled: "{{ service_default_enabled | default(true) | bool }}"
+  tags:
+    - percona-server-start-enable-service

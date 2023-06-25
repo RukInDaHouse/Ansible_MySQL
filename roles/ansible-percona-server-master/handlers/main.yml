@@ -1,0 +1,7 @@
+# handlers file
+---
+- name: restart percona-server
+  ansible.builtin.service:
+    name: mysql
+    state: "{{ percona_server_restart_handler_state }}"
+  when: service_default_state | default('started') == 'started'
